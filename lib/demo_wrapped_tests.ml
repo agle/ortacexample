@@ -71,6 +71,16 @@ module Model = (Ortac_runtime.Model.Make)(ModelElt)
 module Spec =
   struct
     open STM
+    module QCheck =
+      struct
+        include QCheck
+        module Gen =
+          struct
+            include Gen
+            let int = oneofl [0; 1; 2]
+            let char = char_range 'a' 'z'
+          end
+      end
     type _ ty +=  
       | Integer: Ortac_runtime.integer ty 
     let integer = (Integer, Ortac_runtime.string_of_integer)
