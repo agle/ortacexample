@@ -8,4 +8,4 @@ let get a i =
   Array.get a i
 let set xs i x =
   print_endline "hello set";
-  Array.set xs 0 x ;
+  Array.set xs i x ;

@@ -311,44 +311,54 @@ let set t_3 i_2 a_3 =
           {
             pos_fname = "demo.mli";
             pos_lnum = 22;
-            pos_bol = 906;
-            pos_cnum = 1008
+            pos_bol = 904;
+            pos_cnum = 1006
           }
       } "set" in
   let ___ortac_copy_1 = Ortac_runtime.copy t_3 in
-  if
-    not
-      (try
-         let __t1__011_ =
-           Ortac_runtime.Gospelstdlib.(<=)
-             (Ortac_runtime.Gospelstdlib.integer_of_int 0)
-             (Ortac_runtime.Gospelstdlib.integer_of_int i_2) in
-         let __t2__012_ =
-           Ortac_runtime.Gospelstdlib.(<)
-             (Ortac_runtime.Gospelstdlib.integer_of_int i_2)
-             (Ortac_runtime.Gospelstdlib.integer_of_int
-                (__projection_size__001_ t_3)) in
-         __t1__011_ && __t2__012_
-       with
-       | e ->
-           ((Ortac_runtime.Specification_failure
-               { term = "0 <= i < t.size"; term_kind = Pre; exn = e })
-              |> (Ortac_runtime.Errors.register __error__010_);
-            true))
-  then
-    (Ortac_runtime.Violated_condition
-       { term = "0 <= i < t.size"; term_kind = Pre })
-      |> (Ortac_runtime.Errors.register __error__010_);
+  let __check__013_ =
+    try
+      let __t1__011_ =
+        Ortac_runtime.Gospelstdlib.(<=)
+          (Ortac_runtime.Gospelstdlib.integer_of_int 0)
+          (Ortac_runtime.Gospelstdlib.integer_of_int i_2) in
+      let __t2__012_ =
+        Ortac_runtime.Gospelstdlib.(<)
+          (Ortac_runtime.Gospelstdlib.integer_of_int i_2)
+          (Ortac_runtime.Gospelstdlib.integer_of_int t_3.size) in
+      __t1__011_ && __t2__012_
+    with
+    | e ->
+        ((Ortac_runtime.Specification_failure
+            { term = "0 <= i < t.size"; term_kind = Check; exn = e })
+           |> (Ortac_runtime.Errors.register __error__010_);
+         true) in
   Ortac_runtime.Errors.report __error__010_;
   (let () =
      try set t_3 i_2 a_3
      with
+     | Invalid_argument _ as e ->
+         ((if true && __check__013_
+           then
+             (Ortac_runtime.Unexpected_checks { terms = [] }) |>
+               (Ortac_runtime.Errors.register __error__010_);
+           Ortac_runtime.Errors.report __error__010_);
+          raise e)
      | Stack_overflow | Out_of_memory as e ->
-         (Ortac_runtime.Errors.report __error__010_; raise e)
+         ((if not __check__013_
+           then
+             (Ortac_runtime.Uncaught_checks { term = "0 <= i < t.size" }) |>
+               (Ortac_runtime.Errors.register __error__010_);
+           Ortac_runtime.Errors.report __error__010_);
+          raise e)
      | e ->
          ((Ortac_runtime.Unexpected_exception { allowed_exn = []; exn = e })
             |> (Ortac_runtime.Errors.register __error__010_);
-          Ortac_runtime.Errors.report __error__010_;
+          (if not __check__013_
+           then
+             (Ortac_runtime.Uncaught_checks { term = "0 <= i < t.size" }) |>
+               (Ortac_runtime.Errors.register __error__010_);
+           Ortac_runtime.Errors.report __error__010_);
           raise e) in
    if
      not
@@ -379,5 +389,9 @@ let set t_3 i_2 a_3 =
           term_kind = Post
         })
        |> (Ortac_runtime.Errors.register __error__010_);
+   if not __check__013_
+   then
+     (Ortac_runtime.Uncaught_checks { term = "0 <= i < t.size" }) |>
+       (Ortac_runtime.Errors.register __error__010_);
    Ortac_runtime.Errors.report __error__010_;
    ())

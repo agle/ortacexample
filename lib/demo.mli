@@ -17,6 +17,6 @@ val get : 'a t -> int -> 'a
 
 val set : 'a t -> int -> 'a -> unit
 (*@ set t i a
-    requires 0 <= i < t.size
+    checks 0 <= i < t.size
     modifies t.contents
     ensures t.contents = List.mapi (fun j x -> if j = (i : integer) then a else x) (old t.contents) *)
