@@ -1,4 +1,5 @@
-include Demo_wrapped
+include Demo
+open QCheck
 type sut = char t
 let init_sut = make 1000 '0'
 
