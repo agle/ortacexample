@@ -7,35 +7,12 @@
  (alias runtest)
  (mode promote)
  (action
+   (with-stdout-to dune.wrapper.inc
    (setenv
     ORTAC_ONLY_PLUGIN
     dune-rules
    (run ortac dune wrapper demo.mli))))
-
-(include dune.wrapper.inc)
-
-
-(library
- (name demo_wrapped_config)
- (libraries demo_wrapped)
- (modules demo_wrapped_config))
-
-(rule
- (targets dune.inc)
- (alias runtest)
-  (mode promote)
-  (action
-   (with-stdout-to
-    dune.inc
-    ; (pipe-stdout
-     (run ortac dune qcheck-stm ../lib/demo_wrapped.mli)
-     ; filter out the promote settings for the generated
-     ; test code, so the test code is not committed.
-     ; (run grep -v "alias runtest")
-     ; (run grep -v "mode promote")
-     ; )
-   )
-   )
  )
 
-(include dune.inc)
+
+(include dune.wrapper.inc)

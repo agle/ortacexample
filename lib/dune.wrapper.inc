@@ -31,5 +31,4 @@
 (library
  (name demo_wrapped)
  (modules demo_wrapped)
- (flags -w -27)
  (libraries ortac-runtime demo))
